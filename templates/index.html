@@ -65,6 +65,7 @@
             background-color: #ebf8ff;
             flex-direction: column;
             text-align: center;
+            position: relative;
         }
         h1 {
             font-size: 2rem;
@@ -102,9 +103,17 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.5s;
         }
+        #day-eight {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.25rem;
+            color: #2d3748;
+        }
     </style>
 </head>
 <body>
+    <div id="day-eight">Day 8</div>
     <h1>🎄 Days Until Christmas 🎅</h1>
     <div id="countdown">Loading...</div>
     <button onclick="showRandomFact()">Show Random Christmas Fact</button>
