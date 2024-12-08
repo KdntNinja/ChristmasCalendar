@@ -3,8 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Christmas Countdown</title>
-</head>
-<body>
+    <script>
+        function updateCountdown() {
+            fetch('/time_until_christmas')
+                .then(response => response.json())
+                .then(data => {
+                    const countdownElement = document.getElementById('countdown');
+                    if (data.time_until_christmas === "0d 0h 0m 0s") {
+                        countdownElement.innerText = "Merry Christmas!";
+                    } else {
+                        countdownElement.innerText = data.time_until_christmas;
+                    }
+                });
+        }
 
-</body>
+        function toggleColor() {
+            const countdownElement = document.getElementById('countdown');
+            countdownElement.classList.toggle('text-green-600');
+            countdownElement.classList.toggle('text-red-600');
+        }
+
+        function showRandomFact() {
+            fetch('/random_christmas_fact')
+                .then(response => response.json())
+                .then(data => {
+                    const factElement = document.getElementById('fact');
+                    factElement.innerText = data.fact;
+                });
+        }
+
+        setInterval(toggleColor, 200);
+        setInterval(updateCountdown, 1000);
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+    <body class="flex items-center justify-center h-screen bg-blue-50">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-green-500 animate-bounce">🎄 Days Until Christmas 🎅</h1>
+            <div id="countdown" class="text-2xl text-red-600 mt-4 bg-yellow-200 p-4 rounded-lg shadow-lg transition-all duration-500 inline-block">
+                Loading...
+            </div>
+            <div class="text-center">
+                <button onclick="showRandomFact()" class="mt-4 bg-green-500 text-white p-2 rounded">Show Random Christmas Fact</button>
+            <div id="fact" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
+                Click the button above to show a random Christmas fact!
+            </div>
+        </div>
+        </div>
+    </body>
 </html>
