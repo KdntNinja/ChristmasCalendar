@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christmas Countdown</title>
     <script>
         function updateCountdown() {
@@ -37,39 +38,72 @@
     </script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        @media (max-width: 640px) {
+        @media (min-width: 641px) {
             h1 {
-                font-size: 2rem;
+                font-size: 4rem;
             }
             #countdown {
-                font-size: 1.5rem;
-                padding: 1rem;
-                margin-top: 1rem;
+                font-size: 2rem;
+                padding: 2rem;
+                margin-top: 2rem;
             }
             button {
-                padding: 1rem;
-                font-size: 1rem;
+                padding: 1.5rem;
+                font-size: 1.25rem;
             }
             #fact {
-                font-size: 1.5rem;
-                padding: 1rem;
-                margin-top: 1rem;
+                font-size: 2rem;
+                padding: 2rem;
+                margin-top: 2rem;
             }
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #ebf8ff;
+            flex-direction: column;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #48bb78;
+            animation: bounce 2s infinite;
+        }
+        #countdown {
+            font-size: 1.5rem;
+            color: #e53e3e;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #fefcbf;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s;
+        }
+        button {
+            margin-top: 1rem;
+            background-color: #48bb78;
+            color: #fff;
+            padding: 1rem;
+            border-radius: 0.25rem;
+        }
+        #fact {
+            font-size: 1.5rem;
+            color: #3182ce;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #e2e8f0;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s;
         }
     </style>
 </head>
-    <body class="flex items-center justify-center h-screen bg-blue-50">
-        <div class="text-center">
-            <h1 class="text-4xl font-bold text-green-500 animate-bounce">🎄 Days Until Christmas 🎅</h1>
-            <div id="countdown" class="text-2xl text-red-600 mt-4 bg-yellow-200 p-4 rounded-lg shadow-lg transition-all duration-500 inline-block">
-                Loading...
-            </div>
-            <div class="text-center">
-                <button onclick="showRandomFact()" class="mt-4 bg-green-500 text-white p-2 rounded">Show Random Christmas Fact</button>
-            <div id="fact" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
-                Click the button above to show a random Christmas fact!
-            </div>
-        </div>
-        </div>
-    </body>
+<body>
+    <h1>🎄 Days Until Christmas 🎅</h1>
+    <div id="countdown">Loading...</div>
+    <button onclick="showRandomFact()">Show Random Christmas Fact</button>
+    <div id="fact">Click the button above to show a random Christmas fact!</div>
+</body>
 </html>
