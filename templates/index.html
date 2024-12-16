@@ -79,47 +79,81 @@
         }
     </script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .blinking-lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            pointer-events: none;
+            z-index: 9999;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .blinking-lights div {
+            width: 10px;
+            height: 10px;
+            margin: 2px;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { background-color: red; }
+            25% { background-color: green; }
+            50% { background-color: blue; }
+            75% { background-color: yellow; }
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
 </head>
-    <body class="flex items-center justify-center h-screen bg-blue-50">
+<body class="flex items-center justify-center h-screen bg-blue-50">
+    <div class="blinking-lights">
+        <!-- Create 100 light bulbs -->
+        <script>
+            for (let i = 0; i < 100; i++) {
+                document.write('<div></div>');
+            }
+        </script>
+    </div>
+    <div class="text-center">
+        <h1 class="text-4xl font-bold text-green-500 animate-bounce">🎄 Days Until Christmas 🎅</h1>
+        <div id="countdown" class="text-2xl text-red-600 mt-4 bg-yellow-200 p-4 rounded-lg shadow-lg transition-all duration-500 inline-block">
+            Loading...
+        </div>
         <div class="text-center">
-            <h1 class="text-4xl font-bold text-green-500 animate-bounce">🎄 Days Until Christmas 🎅</h1>
-            <div id="countdown" class="text-2xl text-red-600 mt-4 bg-yellow-200 p-4 rounded-lg shadow-lg transition-all duration-500 inline-block">
-                Loading...
-            </div>
-            <div class="text-center">
-                <button onclick="showRandomFact()" class="mt-4 bg-green-500 text-white p-2 rounded">Show Random Christmas Fact</button>
-            <div id="fact" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
-                Click the button above to show a random Christmas fact!
-            </div>
-            <form onsubmit="submitMessage(event)" class="mt-4">
-                <label for="message-input"></label><input id="message-input" type="text" placeholder="Enter your Christmas message" class="p-2 rounded border">
-                <button type="submit" class="bg-green-500 text-white p-2 rounded">Add Message</button>
-            </form>
-            <div id="messages" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
-                <!-- Messages will be displayed here -->
-            </div>
+            <button onclick="showRandomFact()" class="mt-4 bg-green-500 text-white p-2 rounded">Show Random Christmas Fact</button>
+        <div id="fact" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
+            Click the button above to show a random Christmas fact!
         </div>
+        <form onsubmit="submitMessage(event)" class="mt-4">
+            <label for="message-input"></label><input id="message-input" type="text" placeholder="Enter your Christmas message" class="p-2 rounded border">
+            <button type="submit" class="bg-green-500 text-white p-2 rounded">Add Message</button>
+        </form>
+        <div id="messages" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
+            <!-- Messages will be displayed here -->
         </div>
-        <audio id="christmas-jingle" src="../static/jingle.mp3" preload="auto"></audio>
-    </body>
+    </div>
+    </div>
+    <audio id="christmas-jingle" src="../static/jingle.mp3" preload="auto"></audio>
+</body>
 </html>
-
-<style>
-    .snowflake {
-        position: absolute;
-        top: -10px;
-        z-index: -1;
-        user-select: none;
-        pointer-events: none;
-        animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-        0% {
-            transform: translateY(0);
-        }
-        100% {
-            transform: translateY(100vh);
-        }
-    }
-</style>
