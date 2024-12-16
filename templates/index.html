@@ -2,6 +2,7 @@
 <html lang="en" class="snowflakes">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christmas Countdown</title>
     <script>
         async function updateCountdown() {
@@ -225,7 +226,7 @@
         }
     </script>
 </div>
-<div class="text-center">
+<div class="text-center p-4">
     <h1 class="text-4xl font-bold text-green-500 animate-bounce">🎄 Days Until Christmas 🎅</h1>
     <div id="countdown" class="text-2xl text-red-600 mt-4 bg-yellow-200 p-4 rounded-lg shadow-lg transition-all duration-500 inline-block">
         Loading...
@@ -236,8 +237,8 @@
             Click the button above to show a random Christmas fact!
         </div>
         <form onsubmit="submitMessage(event)" class="mt-4">
-            <label for="message-input"></label><input id="message-input" type="text" placeholder="Enter your Christmas message" class="p-2 rounded border">
-            <button type="submit" class="bg-green-500 text-white p-2 rounded">Add Message</button>
+            <label for="message-input"></label><input id="message-input" type="text" placeholder="Enter your Christmas message" class="p-2 rounded border w-full max-w-xs">
+            <button type="submit" class="bg-green-500 text-white p-2 rounded mt-2">Add Message</button>
         </form>
         <div id="messages" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
             <!-- Messages will be displayed here -->
@@ -245,8 +246,8 @@
         <div class="text-center mt-8">
             <h2 class="text-3xl font-bold text-green-500">🎁 Gift List 🎁</h2>
             <form onsubmit="submitGift(event)" class="mt-4">
-                <label for="gift-input"></label><input id="gift-input" type="text" placeholder="Enter a gift" class="p-2 rounded border">
-                <button type="submit" class="bg-green-500 text-white p-2 rounded">Add Gift</button>
+                <label for="gift-input"></label><input id="gift-input" type="text" placeholder="Enter a gift" class="p-2 rounded border w-full max-w-xs">
+                <button type="submit" class="bg-green-500 text-white p-2 rounded mt-2">Add Gift</button>
             </form>
             <div id="gifts" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
                 <!-- Gifts will be displayed here -->
