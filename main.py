@@ -63,6 +63,5 @@ class ChristmasApp:
         return []
 
 
-
 christmas_app = ChristmasApp()
 app = christmas_app.app
