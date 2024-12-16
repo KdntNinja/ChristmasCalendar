@@ -4,17 +4,36 @@
     <meta charset="UTF-8">
     <title>Christmas Countdown</title>
     <script>
-        function updateCountdown() {
-            fetch('/time_until_christmas')
-                .then(response => response.json())
-                .then(data => {
-                    const countdownElement = document.getElementById('countdown');
-                    if (data.time_until_christmas === "0d 0h 0m 0s") {
-                        countdownElement.innerText = "Merry Christmas!";
-                    } else {
-                        countdownElement.innerText = data.time_until_christmas;
-                    }
-                });
+        async function updateCountdown() {
+            const response = await fetch('/time_until_christmas');
+            const data = await response.json();
+            const countdownElement = document.getElementById('countdown');
+            const daysLeft = parseInt(data.time_until_christmas.split('d')[0]);
+
+            if (data.time_until_christmas === "0d 0h 0m 0s") {
+                countdownElement.innerText = "Merry Christmas!";
+            } else {
+                countdownElement.innerText = data.time_until_christmas;
+            }
+
+            await checkMilestone(daysLeft);
+        }
+
+        async function checkMilestone(daysLeft) {
+            const response = await fetch('/milestone_messages');
+            const messages = await response.json();
+            if (messages[daysLeft]) {
+                showPopup(messages[daysLeft]);
+            }
+        }
+
+        function showPopup(message) {
+            const popup = document.getElementById('popup');
+            popup.innerText = message;
+            popup.classList.add('show');
+            setTimeout(() => {
+                popup.classList.remove('show');
+            }, 5000);
         }
 
         function toggleColor() {
@@ -48,18 +67,18 @@
                 },
                 body: JSON.stringify({ message: message })
             })
-            .then(response => response.json())
-            .then(data => {
-                const messagesElement = document.getElementById('messages');
-                const newMessageElement = document.createElement('div');
-                newMessageElement.innerText = data.message;
-                messagesElement.appendChild(newMessageElement);
-                messageInput.value = '';
-            });
+                .then(response => response.json())
+                .then(data => {
+                    const messagesElement = document.getElementById('messages');
+                    const newMessageElement = document.createElement('div');
+                    newMessageElement.innerText = data.message;
+                    messagesElement.appendChild(newMessageElement);
+                    messageInput.value = '';
+                });
         }
 
         function createSnowflakes() {
-            const snowflakeCount = 50;
+            const snowflakeCount = 100;
             for (let i = 0; i < snowflakeCount; i++) {
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
@@ -124,24 +143,74 @@
                 transform: translateY(100vh);
             }
         }
+
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffeb3b;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 10000;
+        }
+
+        .popup.show {
+            opacity: 1;
+        }
+
+        .fireplace {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            z-index: 9999;
+        }
+
+        .fire {
+            width: 20px;
+            height: 100px;
+            background: linear-gradient(to top, #ff4500, #ffa500, #ffff00);
+            margin: 0 2px;
+            border-radius: 50% 50% 0 0;
+            animation: flicker 0.5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 50% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+            25%, 75% {
+                transform: scaleY(1.5);
+                opacity: 0.8;
+            }
+        }
     </style>
 </head>
 <body class="flex items-center justify-center h-screen bg-blue-50">
-    <div class="blinking-lights">
-        <!-- Create 100 light bulbs -->
-        <script>
-            for (let i = 0; i < 100; i++) {
-                document.write('<div></div>');
-            }
-        </script>
+<div class="blinking-lights">
+    <!-- Create 100 light bulbs -->
+    <script>
+        for (let i = 0; i < 100; i++) {
+            document.write('<div></div>');
+        }
+    </script>
+</div>
+<div class="text-center">
+    <h1 class="text-4xl font-bold text-green-500 animate-bounce">🎄 Days Until Christmas 🎅</h1>
+    <div id="countdown" class="text-2xl text-red-600 mt-4 bg-yellow-200 p-4 rounded-lg shadow-lg transition-all duration-500 inline-block">
+        Loading...
     </div>
     <div class="text-center">
-        <h1 class="text-4xl font-bold text-green-500 animate-bounce">🎄 Days Until Christmas 🎅</h1>
-        <div id="countdown" class="text-2xl text-red-600 mt-4 bg-yellow-200 p-4 rounded-lg shadow-lg transition-all duration-500 inline-block">
-            Loading...
-        </div>
-        <div class="text-center">
-            <button onclick="showRandomFact()" class="mt-4 bg-green-500 text-white p-2 rounded">Show Random Christmas Fact</button>
+        <button onclick="showRandomFact()" class="mt-4 bg-green-500 text-white p-2 rounded">Show Random Christmas Fact</button>
         <div id="fact" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
             Click the button above to show a random Christmas fact!
         </div>
@@ -153,7 +222,16 @@
             <!-- Messages will be displayed here -->
         </div>
     </div>
-    </div>
-    <audio id="christmas-jingle" src="../static/jingle.mp3" preload="auto"></audio>
+</div>
+<div id="popup" class="popup"></div>
+<div class="fireplace">
+    <!-- Create 50 flames -->
+    <script>
+        for (let i = 0; i < 50; i++) {
+            document.write('<div class="fire"></div>');
+        }
+    </script>
+</div>
+<audio id="christmas-jingle" src="../static/jingle.mp3" preload="auto"></audio>
 </body>
 </html>

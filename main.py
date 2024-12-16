@@ -21,6 +21,7 @@ class ChristmasApp:
         self.app.get("/", response_class=HTMLResponse)(self.root)
         self.app.get("/time_until_christmas")(self.time_until_christmas)
         self.app.get("/random_christmas_fact")(self.random_christmas_fact)
+        self.app.get("/milestone_messages")(self.milestone_messages)
         self.app.post("/add_message")(self.add_message)
 
     async def root(self, request: Request):
@@ -43,6 +44,17 @@ class ChristmasApp:
     async def random_christmas_fact(self):
         fact = choice(self.christmas_facts)
         return {"fact": fact}
+
+    @staticmethod
+    async def milestone_messages():
+        milestone_messages = {
+            "10": "Only 10 days left until Christmas! 🎄",
+            "5": "Just 5 days to go! 🎅",
+            "2": "Only 2 days left! Get ready! 🎁",
+            "1": "Tomorrow is Christmas! 🎉",
+            "0": "Merry Christmas! 🎄🎅🎁"
+        }
+        return JSONResponse(content=milestone_messages)
 
     async def add_message(self, request: Request):
         data = await request.json()
