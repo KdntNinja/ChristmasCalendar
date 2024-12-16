@@ -13,6 +13,7 @@ class ChristmasApp:
         self.app = FastAPI()
         self.templates = Jinja2Templates(directory="templates")
         self.christmas_messages = self.load_messages()
+        self.gift_list = self.load_gifts()
         with open("christmas_facts.json", "r") as file:
             self.christmas_facts = json.load(file)
         self.setup_routes()
@@ -23,6 +24,7 @@ class ChristmasApp:
         self.app.get("/random_christmas_fact")(self.random_christmas_fact)
         self.app.get("/milestone_messages")(self.milestone_messages)
         self.app.post("/add_message")(self.add_message)
+        self.app.post("/add_gift")(self.add_gift)
 
     async def root(self, request: Request):
         return self.templates.TemplateResponse("index.html", {"request": request})
@@ -63,14 +65,32 @@ class ChristmasApp:
         self.save_messages()
         return JSONResponse(content={"message": message})
 
+    async def add_gift(self, request: Request):
+        data = await request.json()
+        gift = data.get("gift")
+        self.gift_list.append(gift)
+        self.save_gifts()
+        return JSONResponse(content={"gift": gift})
+
     def save_messages(self):
         with open("christmas_messages.json", "w") as file:
             json.dump(self.christmas_messages, file)
+
+    def save_gifts(self):
+        with open("gift_list.json", "w") as file:
+            json.dump(self.gift_list, file)
 
     @staticmethod
     def load_messages():
         if os.path.exists("christmas_messages.json"):
             with open("christmas_messages.json", "r") as file:
+                return json.load(file)
+        return []
+
+    @staticmethod
+    def load_gifts():
+        if os.path.exists("gift_list.json"):
+            with open("gift_list.json", "r") as file:
                 return json.load(file)
         return []
 

@@ -77,6 +77,27 @@
                 });
         }
 
+        function submitGift(event) {
+            event.preventDefault();
+            const giftInput = document.getElementById('gift-input');
+            const gift = giftInput.value;
+            fetch('/add_gift', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ gift: gift })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const giftsElement = document.getElementById('gifts');
+                    const newGiftElement = document.createElement('div');
+                    newGiftElement.innerText = data.gift;
+                    giftsElement.appendChild(newGiftElement);
+                    giftInput.value = '';
+                });
+        }
+
         function createSnowflakes() {
             const snowflakeCount = 100;
             for (let i = 0; i < snowflakeCount; i++) {
@@ -220,6 +241,16 @@
         </form>
         <div id="messages" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
             <!-- Messages will be displayed here -->
+        </div>
+        <div class="text-center mt-8">
+            <h2 class="text-3xl font-bold text-green-500">🎁 Gift List 🎁</h2>
+            <form onsubmit="submitGift(event)" class="mt-4">
+                <label for="gift-input"></label><input id="gift-input" type="text" placeholder="Enter a gift" class="p-2 rounded border">
+                <button type="submit" class="bg-green-500 text-white p-2 rounded">Add Gift</button>
+            </form>
+            <div id="gifts" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
+                <!-- Gifts will be displayed here -->
+            </div>
         </div>
     </div>
 </div>
