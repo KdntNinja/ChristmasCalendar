@@ -32,8 +32,37 @@
                 });
         }
 
-        setInterval(toggleColor, 200);
-        setInterval(updateCountdown, 1000);
+        function playJingle() {
+            const audio = document.getElementById('christmas-jingle');
+            audio.play();
+        }
+
+        function submitMessage(event) {
+            event.preventDefault();
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value;
+            fetch('/add_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messagesElement = document.getElementById('messages');
+                const newMessageElement = document.createElement('div');
+                newMessageElement.innerText = data.message;
+                messagesElement.appendChild(newMessageElement);
+                messageInput.value = '';
+            });
+        }
+
+        window.onload = function() {
+            playJingle();
+            setInterval(toggleColor, 200);
+            setInterval(updateCountdown, 1000);
+        }
     </script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -48,7 +77,15 @@
             <div id="fact" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
                 Click the button above to show a random Christmas fact!
             </div>
+            <form onsubmit="submitMessage(event)" class="mt-4">
+                <input id="message-input" type="text" placeholder="Enter your Christmas message" class="p-2 rounded border">
+                <button type="submit" class="bg-green-500 text-white p-2 rounded">Add Message</button>
+            </form>
+            <div id="messages" class="text-2xl text-blue-600 mt-4 p-4 rounded-lg shadow-lg transition-all duration-500">
+                <!-- Messages will be displayed here -->
+            </div>
         </div>
         </div>
+        <audio id="christmas-jingle" src="../static/jingle.mp3" preload="auto"></audio>
     </body>
 </html>
